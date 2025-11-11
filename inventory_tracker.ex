@@ -1,13 +1,16 @@
 # We need to keep track of the potion shop's inventory.
 
-def elixir_inventory do
+defmodule Elixir_inventory do
 	# Create list of our potions
 	# Use tuple (map potions to their quantities) or list?
 	  potions = [
 	{"Healing Potion", 10},
 	{"Mana Potion", 5},
 	{"Strength Potion", 3},
-	{"Invisibility Potion", 2}
+	{"Invisibility Potion", 2},
+	{"Stamina Elixir", 7},
+	{"Mystery Vial", 11},
+	{"Elixir Programming Language", 1}
   ]
 
   # Function to display current inventory
@@ -39,7 +42,7 @@ def elixir_inventory do
 		  if qty >= quantity do
 			{name, qty - quantity}
 		  else
-			IO.puts("Not enough #{name} in inventory.")
+			IO.puts("#{name} is out of stock.")
 			{name, qty}
 		  end
 		end)
@@ -47,11 +50,11 @@ def elixir_inventory do
   end
 
   # Example usage
-  potions = elixir_inventory()
-  display_inventory(potions)
-  potions = add_potion(potions, "Healing Potion", 5)
-  display_inventory(potions)
-  potions = remove_potion(potions, "Mana Potion", 2)
-  display_inventory(potions)
+  # potions = elixir_inventory()
+  # display_inventory(potions)
+  # potions = add_potion(potions, "Healing Potion", 5)
+  # display_inventory(potions)
+  # potions = remove_potion(potions, "Mana Potion", 2)
+  # display_inventory(potions)
 
 end
