@@ -3,20 +3,32 @@ defmodule Inventory do
   Manages the potion shop's inventory using an Agent.
   """
 # We need to keep track of the potion shop's inventory.
-  def start_link do 
+  def start_link do
 	# Create list of our potions
 	# Use tuple (map potions to their quantities) or list?
 	  potions = %{
-	"Healing Potion" => 10,
-	"Mana Potion" => 5,
-	"Strength Potion" => 3,
-	"Invisibility Potion" => 2,
-	"Stamina Elixir" => 7,
-	"Mystery Vial" => 11,
-	"Elixir Programming Language" => 1
+		"Healing Potion" => 10,
+		"Mana Potion" => 5,
+		"Strength Potion" => 3,
+		"Invisibility Potion" => 2,
+		"Stamina Elixir" => 7,
+		"Mystery Vial" => 11,
+		"Elixir Programming Language" => 1
 	  }
 
 	Agent.start_link(fn -> potions end, name: __MODULE__)
+  end
+
+  def prices do
+    %{
+      "Healing Potion" => 5,
+      "Mana Potion" => 8,
+      "Strength Potion" => 12,
+      "Invisibility Potion" => 20,
+      "Stamina Elixir" => 10,
+      "Mystery Vial" => 15,
+      "Elixir Programming Language" => 100
+    }
   end
 
   # Function to display current inventory
@@ -24,7 +36,8 @@ defmodule Inventory do
 	inventory = Agent.get(__MODULE__, & &1)
 	IO.puts("\n🧪Current Potion Inventory:")
 	Enum.each(inventory, fn {potion, quantity} ->
-	  IO.puts("#{potion}: #{quantity}")
+	  price = Map.get(prices(), potion, "?")
+	  IO.puts(" - #{potion}: #{quantity} available (💰 #{price} gold each)")
 	end)
   end
 
@@ -36,41 +49,36 @@ defmodule Inventory do
 	IO.puts("✅ Added #{quantity} #{potion_name}(s) to inventory.")
   end
 
-  def buy_potion(potion_name, quantity) do
+  def buy_potion(potion_name, quantity, gold) do
     Agent.get_and_update(__MODULE__, fn inv ->
       case Map.fetch(inv, potion_name) do
         :error ->
           IO.puts("⚠️ Potion not found.")
-          {inv, inv}
+          {{:error, gold}, inv}
 
         {:ok, current_qty} when current_qty >= quantity ->
-          IO.puts("💰 You bought #{quantity} #{potion_name}(s)!")
-          {inv, Map.put(inv, potion_name, current_qty - quantity)}
+		  price = Map.get(prices(), potion_name, 0)
+          total_cost = price * quantity
+
+		  if gold >= total_cost do
+			new_inv = Map.put(inv, potion_name, current_qty - quantity)
+			new_gold = gold - total_cost
+			IO.puts("💰 You bought #{quantity} #{potion_name}(s) for #{total_cost} gold!")
+			{{:ok, new_gold}, new_inv}
+		  else
+			IO.puts("❌ Not enough gold! You need #{total_cost - gold} more.")
+            {{:error, gold}, inv}
+		  end
+
+
 
         {:ok, _} ->
           IO.puts("❌ Not enough stock for #{potion_name}.")
-          {inv, inv}
+          {{:error,gold}, inv}
       end
     end)
   end
 
-		# Function to remove potions from inventory
-		def remove_potion(potions, potion_name, quantity) do
-			case Enum.find_index(potions, fn {name, _} -> name == potion_name end) do
-			nil -> 
-				IO.puts("Potion not found in inventory.")
-				potions
-			index -> 
-				List.update_at(potions, index, fn {name, qty} -> 
-				if qty >= quantity do
-					{name, qty - quantity}
-				else
-					IO.puts("#{name} is out of stock.")
-					{name, qty}
-				end
-				end)
-			end
-		end
 
   # Example usage
   # potions = elixir_inventory()
