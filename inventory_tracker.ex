@@ -78,6 +78,28 @@ defmodule Inventory do
       end
     end)
   end
+ def sell_potion(potion_name, quantity, gold) do
+  Agent.get_and_update(__MODULE__, fn inv ->
+    case Map.fetch(inv, potion_name) do
+      :error ->
+        IO.puts("⚠️ Potion not found in shop inventory.")
+        {{:error, gold}, inv}
+
+      {:ok, current_qty} ->
+        # Look up the price from the prices map
+        price_map = prices()
+        price = Map.get(price_map, potion_name, 0)
+        sell_price = div(price, 2)  # Half value when selling back
+        earned = sell_price * quantity
+
+        # Add sold items back to shop inventory
+        new_inv = Map.put(inv, potion_name, current_qty + quantity)
+
+        IO.puts("💸 You sold #{quantity} #{potion_name}(s) for #{earned} gold!")
+        {{:ok, gold + earned}, new_inv}
+    end
+  end)
+end
 
 
   # Example usage

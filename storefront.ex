@@ -10,7 +10,7 @@ defmodule Storefront do
   def run do
     Inventory.start_link()
     IO.puts("Greetings, adventurer! Care to purchase a potion? ")
-    intro_loop(50)#50 starting gold
+    intro_loop(300)#300 starting gold
     # user says no, we pester them lol
     # user says yes / maybe
     # go thru list of potions to show user the options
@@ -43,7 +43,7 @@ defmodule Storefront do
     Choose an option:
     1. View Inventory
     2. Buy Potion
-    3. Restock Potion
+    3. Sell Potion
     4. Exit
     """)
 
@@ -61,13 +61,20 @@ defmodule Storefront do
           {:ok, new_gold} -> loop(new_gold)
           {:error, same_gold} -> loop(same_gold)
         end
-        
 
-      "3" ->
+       "3" ->
         potion = IO.gets("Enter potion name: ") |> String.trim()
-        qty = IO.gets("Enter quantity to restock: ") |> String.trim() |> String.to_integer()
-        Inventory.add_potion(potion, qty)
-        loop(gold)
+        qty = IO.gets("Enter quantity to sell: ") |> String.trim() |> String.to_integer()
+        case Inventory.sell_potion(potion, qty, gold) do
+          {:ok, new_gold} -> loop(new_gold)
+          {:error, gold} -> loop(gold)
+        end
+
+      #"3" ->
+      #  potion = IO.gets("Enter potion name: ") |> String.trim()
+      #  qty = IO.gets("Enter quantity to restock: ") |> String.trim() |> String.to_integer()
+      #  Inventory.add_potion(potion, qty)
+      #  loop(gold)
 
       "4" ->
         IO.puts("👋 Thanks for visiting the Potion Shop! Goodbye!")
