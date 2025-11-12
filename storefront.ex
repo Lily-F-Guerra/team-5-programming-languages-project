@@ -11,7 +11,7 @@ defmodule Storefront do
     Inventory.start_link()
     PlayerInventory.start_link()
     IO.puts("Greetings, adventurer! Care to purchase a potion? ")
-    intro_loop(300)#300 starting gold
+    intro_loop(50)#50 starting gold
   end
 
   defp intro_loop(gold) do
@@ -43,7 +43,8 @@ defmodule Storefront do
     2. View Your Inventory
     3. Buy Potion
     4. Sell Potion
-    5. Exit
+    5. Earn Gold
+    6. Exit
     """)
 
     choice = IO.gets("Your choice: ") |> String.trim()
@@ -84,14 +85,11 @@ defmodule Storefront do
               loop(gold)
           end
 
-
-      #"3" ->
-      #  potion = IO.gets("Enter potion name: ") |> String.trim()
-      #  qty = IO.gets("Enter quantity to restock: ") |> String.trim() |> String.to_integer()
-      #  Inventory.add_potion(potion, qty)
-      #  loop(gold)
-
       "5" ->
+        new_gold = GoldGame.play(gold)
+        loop(new_gold)
+
+      "6" ->
         IO.puts("👋 Thanks for visiting the Potion Shop! Goodbye!")
 
       _ ->
