@@ -12,9 +12,6 @@ defmodule Storefront do
     PlayerInventory.start_link()
     IO.puts("Greetings, adventurer! Care to purchase a potion? ")
     intro_loop(300)#300 starting gold
-    # user says no, we pester them lol
-    # user says yes / maybe
-    # go thru list of potions to show user the options
   end
 
   defp intro_loop(gold) do
