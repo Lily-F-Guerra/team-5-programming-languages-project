@@ -51,7 +51,7 @@ defmodule Inventory do
   end
 
   def buy_potion(potion_name, quantity, gold) do
-    String.upcase(potion_name)
+    potion_name = String.upcase(potion_name)
     Agent.get_and_update(__MODULE__, fn inv ->
       case Map.fetch(inv, potion_name) do
         :error ->
