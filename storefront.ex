@@ -5,14 +5,16 @@ defmodule Storefront do
 # This file will show our wares to passing adventurers (read: handle user interaction)
 
   # Greet the adventurer & show what potions we have to offer
+
   def run do
     Inventory.start_link()
     PlayerInventory.start_link()
+    #uses start_link to run each inventory as its own processs
     IO.puts("Greetings, adventurer! Care to purchase a potion? ")
     intro_loop(50)#50 starting gold
   end
 
-  # Elixir uses recursive functions instead of loops! 
+  # Elixir uses recursive functions instead of loops!
   defp intro_loop(gold) do
     IO.puts("""
 

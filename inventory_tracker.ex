@@ -16,8 +16,11 @@ defmodule Inventory do
     "RED BULL" => 7
 	  }
 
+    #agent is elixir's lightweight process for holding states
+    #launches background process
 	Agent.start_link(fn -> potions end, name: __MODULE__)
   end
+    #__module__ gives agent same name as module
 
   def prices do
     %{
@@ -34,6 +37,7 @@ defmodule Inventory do
 
   # Function to display current inventory
   def display_inventory do
+              #retrieves current state of inventory
 	inventory = Agent.get(__MODULE__, & &1)
 	IO.puts("\n🧪Current Potion Inventory:")
 	Enum.each(inventory, fn {potion, quantity} ->
@@ -44,12 +48,17 @@ defmodule Inventory do
 
   # Function to add potions to inventory
   def add_potion(potion_name, quantity) do
+  #changes inv stored in the agent
 	Agent.update(__MODULE__, fn inv ->
 		Map.update(inv, potion_name, quantity, &(&1 + quantity))
 		end)
 	IO.puts("✅ Added #{quantity} #{potion_name}(s) to inventory.")
   end
+  #immutable
+  #doesn't modify old map, creates a new one.
 
+  #checks if potion exists, enough quantity, if player has enough gold.
+  #safe concurrency(agent updates one at a time)
   def buy_potion(potion_name, quantity, gold) do
     Agent.get_and_update(__MODULE__, fn inv ->
       case Map.fetch(inv, potion_name) do
@@ -79,6 +88,7 @@ defmodule Inventory do
       end
     end)
   end
+  #same as buy
  def sell_potion(potion_name, quantity, gold) do
   Agent.get_and_update(__MODULE__, fn inv ->
     case Map.fetch(inv, potion_name) do
