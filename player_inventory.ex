@@ -2,7 +2,7 @@ defmodule PlayerInventory do
   @moduledoc """
   Tracks the player's personal inventory using an Agent.
   """
-
+ #launches agent process and creates empty map
   def start_link do
     items = %{} # empty at start
 
@@ -12,6 +12,7 @@ defmodule PlayerInventory do
     end
   end
 
+  #gets state of player inventory and displays
   def display_inventory do
     inventory = Agent.get(__MODULE__, & &1)
     IO.puts("\n🎒 Your Inventory:")
@@ -25,6 +26,7 @@ defmodule PlayerInventory do
     end
   end
 
+  #makes newer version of inventory with potion count updated
   def add_potion(potion, qty) do
     Agent.update(__MODULE__, fn inv ->
       Map.update(inv, potion, qty, &(&1 + qty))
