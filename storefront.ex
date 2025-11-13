@@ -3,8 +3,6 @@ defmodule Storefront do
   Command-line interface for the Potion Shop.
   """
 # This file will show our wares to passing adventurers (read: handle user interaction)
-# remember to add our other files!
-
 
   # Greet the adventurer & show what potions we have to offer
   def run do
@@ -14,6 +12,7 @@ defmodule Storefront do
     intro_loop(50)#50 starting gold
   end
 
+  # Elixir uses recursive functions instead of loops! 
   defp intro_loop(gold) do
     IO.puts("""
 
@@ -59,7 +58,7 @@ defmodule Storefront do
         loop(gold)
 
       "3" ->
-        potion = IO.gets("Enter potion name: ") |> String.trim()
+        potion = IO.gets("Enter potion name: ") |> String.trim() |> String.upcase()
         qty = IO.gets("Enter quantity to buy: ") |> String.trim() |> String.to_integer()
         case Inventory.buy_potion(potion, qty, gold) do
           {:ok, new_gold} ->
@@ -70,7 +69,7 @@ defmodule Storefront do
         end
 
        "4" ->
-          potion = IO.gets("Enter potion name: ") |> String.trim()
+          potion = IO.gets("Enter potion name: ") |> String.trim() |> String.upcase()
           qty = IO.gets("Enter quantity to sell: ") |> String.trim() |> String.to_integer()
 
           case PlayerInventory.remove_potion(potion, qty) do

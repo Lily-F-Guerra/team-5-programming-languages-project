@@ -51,7 +51,6 @@ defmodule Inventory do
   end
 
   def buy_potion(potion_name, quantity, gold) do
-    potion_name = String.upcase(potion_name)
     Agent.get_and_update(__MODULE__, fn inv ->
       case Map.fetch(inv, potion_name) do
         :error ->
@@ -103,13 +102,5 @@ defmodule Inventory do
   end)
 end
 
-
-  # Example usage
-  # potions = elixir_inventory()
-  # display_inventory(potions)
-  # potions = add_potion(potions, "Healing Potion", 5)
-  # display_inventory(potions)
-  # potions = remove_potion(potions, "Mana Potion", 2)
-  # display_inventory(potions)
 
 end
