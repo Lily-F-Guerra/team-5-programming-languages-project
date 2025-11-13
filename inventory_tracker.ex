@@ -5,15 +5,15 @@ defmodule Inventory do
 # We need to keep track of the potion shop's inventory.
   def start_link do
 	# Create list of our potions
-	# Use tuple (map potions to their quantities) or list?
 	  potions = %{
-		"Healing Potion" => 10,
-		"Mana Potion" => 5,
-		"Strength Potion" => 3,
-		"Invisibility Potion" => 2,
-		"Stamina Elixir" => 7,
-		"Mystery Vial" => 11,
-		"Elixir Programming Language" => 1
+		"HEALING POTION" => 10,
+		"MANA POTION" => 5,
+		"STRENGTH POTION" => 3,
+		"INVISIBILITY POTION" => 2,
+		"STAMINA ELIXIR" => 7,
+		"MYSTERY VIAL" => 11,
+		"ELIXIR PROGRAMMING LANGUAGE" => 1,
+    "RED BULL" => 7
 	  }
 
 	Agent.start_link(fn -> potions end, name: __MODULE__)
@@ -21,13 +21,14 @@ defmodule Inventory do
 
   def prices do
     %{
-      "Healing Potion" => 5,
-      "Mana Potion" => 8,
-      "Strength Potion" => 12,
-      "Invisibility Potion" => 20,
-      "Stamina Elixir" => 10,
-      "Mystery Vial" => 15,
-      "Elixir Programming Language" => 100
+      "HEALING POTION" => 5,
+      "MANA POTION" => 8,
+      "STRENGTH POTION" => 12,
+      "INVISIBILITY POTION" => 20,
+      "STAMINA ELIXIR" => 10,
+      "MYSTERY VIAL" => 15,
+      "ELIXIR PROGRAMMING LANGUAGE" => 100,
+      "RED BULL" => 6
     }
   end
 
@@ -51,7 +52,7 @@ defmodule Inventory do
 
   def buy_potion(potion_name, quantity, gold) do
     Agent.get_and_update(__MODULE__, fn inv ->
-      case Map.fetch(inv, potion_name) do
+      case Map.fetch(inv, String.upcase(potion_name)) do
         :error ->
           IO.puts("⚠️ Potion not found.")
           {{:error, gold}, inv}
