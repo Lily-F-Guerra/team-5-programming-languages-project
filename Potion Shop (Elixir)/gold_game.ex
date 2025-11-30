@@ -14,6 +14,7 @@ defmodule GoldGame do
     IO.puts("\n🧠 Answer this to earn gold!")
     answer = IO.gets("What is #{num1} #{op_symbol} #{num2}? ") |> String.trim()
 
+    #parse
     case Integer.parse(answer) do
       {int_answer, _} ->
         correct = operation.(num1, num2)
