@@ -62,9 +62,10 @@ class Storefront
     loop do
       puts "\n✨ Adventurer Menu ✨"
       puts "1. View gems for sale"
-      puts "2. View your gold"
-      puts "3. Buy a gem"
-      puts "4. Leave shop"
+      puts "2. Buy gems"
+      puts "3. View your gold"
+      puts "4. View your inventory"
+      puts "5. Leave shop"
 
       choice = gets.chomp
 
@@ -72,25 +73,12 @@ class Storefront
       when "1"
         shelves.each { |gem| gem.display }
       when "2"
-        puts "You have #{player.gold} gold."
+        buy_gem(player)
       when "3"
-        puts "Enter the number of the gem you'd like to purchase."
-        shelves.each_with_index { |gem, i| puts "#{i+1}. #{gem.name}" }
-        index = gets.chomp.to_i - 1
-        gem = shelves[index]
-        price = gem.price
-        if gem = shelves[index] && gem.quantity > 0 && player.gold >= price
-          player.gold = player.gold - price
-          gem.decrease_stock(1)
-          puts "You have purchased one #{gem.name}. #{gem.description} May it bring you good fortune."
-        elsif gem.quantity <= 0
-          puts "Out of stock!"
-        elsif price > player.gold
-          puts "Not enough gold!"
-        else
-          puts "Invalid choice."
-        end
+        puts "You have #{player.gold} gold."
       when "4"
+        view_inventory(player)  
+      when "5"
         puts "Farewell, traveler!"
         exit
       else
@@ -123,6 +111,49 @@ class Storefront
         greet
       else
         puts "Invalid option."
+      end
+    end
+  end
+
+  def buy_gem(player)
+    puts "\nWhich gem would you like to buy?"
+    shelves.each_with_index { |gem, i| puts "#{i+1}. #{gem.name} (#{gem.price} gold, stock: #{gem.quantity})" }
+
+    index = gets.chomp.to_i - 1
+    gem = shelves[index]
+
+    if gem.nil?
+      puts "Invalid choice."
+      return
+    end
+
+    if gem.quantity <= 0
+      puts "Sorry, #{gem.name} is sold out!"
+      return
+    end
+
+    if player.gold < gem.price
+      puts "You don't have enough gold to buy a #{gem.name}!"
+      return
+    end
+
+    # purchase!
+    player.gold -= gem.price
+    gem.update_stock(-1)
+    player.inventory << gem.name
+
+    puts "✨ You bought a #{gem.name}! ✨"
+    puts "Remaining gold: #{player.gold}"
+  end
+
+  def view_inventory(player)
+    puts "\n🎒 Your Inventory 🎒"
+
+    if player.inventory.empty?
+      puts "You don't have any gems yet."
+    else
+      player.inventory.each_with_index do |item, i|
+        puts "#{i+1}. #{item}"
       end
     end
   end

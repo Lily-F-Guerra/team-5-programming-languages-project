@@ -7,8 +7,10 @@ class User
 end
 
 class Adventurer < User
+  attr_accessor :inventory
   def initialize
     super
+    @inventory = []
   end
 end
 
