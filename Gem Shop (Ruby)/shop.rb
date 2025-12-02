@@ -84,6 +84,7 @@ class Storefront
           puts "You have purchased one #{gem.name}. #{gem.description} May it bring you good fortune."
         else 
           puts "Invalid choice."
+        end
       when "4"
         puts "Farewell, traveler!"
         exit
