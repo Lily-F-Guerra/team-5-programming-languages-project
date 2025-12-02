@@ -43,9 +43,26 @@ class Storefront
 
     def shelves do
         # This method will create the list of gems for sale, prices, and number in stock.
-        # Create a list of Gem objects initialized with price, quantity, and a brief description. 
+        # Create a hash of Gem objects initialized with price, quantity, and a brief description. 
         # We should be able to access this as a user.
         # Maybe pass to users when they're created?
+        ruby = Gem.new(70, 6, "A marvelous ruby that grants skill with computers.")
+        emerald = Gem.new(65, 8, "A glittering emerald in harmony with nature.")
+        mystery = Gem.new(50, 10, "Who knows what magic it contains?")
+        moonstone = Gem.new(80, 2, "A radiant stone with the power of the moon.")
+        amulet = Gem.new(90, 1, "This powerful amulet banishes all darkness.")
+        ring_pop = Gem.new(5, 12, "Doesn't do anything, but it's sparkly and sweet!")
+        jade = Gem.new(60, 5, "A charm for protection, carved with artistry.")
+
+        shelf = {
+            "Magic Ruby" => ruby,
+            "Magic Emerald" => emerald,
+            "Mystery Gem" => mystery,
+            "Moonstone" => moonstone,
+            "Amulet of Light" => amulet,
+            "Ring Pop" => ring_pop,
+            "Jade Figurine" => jade
+        }
 
     end
 
