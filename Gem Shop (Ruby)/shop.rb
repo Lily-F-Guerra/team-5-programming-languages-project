@@ -78,11 +78,16 @@ class Storefront
         shelves.each_with_index { |gem, i| puts "#{i+1}. #{gem.name}" }
         index = gets.chomp.to_i - 1
         gem = shelves[index]
-        if gem = shelves[index]
-          player.gold = player.gold - gem.price
-          gem.update_stock(-1)
+        price = gem.price
+        if gem = shelves[index] && gem.quantity > 0 && player.gold >= price
+          player.gold = player.gold - price
+          gem.decrease_stock(1)
           puts "You have purchased one #{gem.name}. #{gem.description} May it bring you good fortune."
-        else 
+        elsif gem.quantity <= 0
+          puts "Out of stock!"
+        elsif price > player.gold
+          puts "Not enough gold!"
+        else
           puts "Invalid choice."
         end
       when "4"
