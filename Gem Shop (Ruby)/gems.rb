@@ -17,9 +17,4 @@ class MagicGem
     @quantity += change
     @quantity = 0 if @quantity < 0
   end
-
-  def decrease_stock(change)
-    @quantity -= change
-    @quantity = 0 if @quantity < 0
-  end
 end
