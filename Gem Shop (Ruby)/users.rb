@@ -1,4 +1,5 @@
-class User
+class Use
+
     def gold
     end
 

@@ -14,7 +14,9 @@ class Storefront
             puts "🦉 \"Ah, welcome! Come on in!\" \n"
             puts "The door swings open, inviting you into the Magical Gem-porium. \n"
             #create Adventurer
+            adventurer = Adventurer.new
             #run the Adventurer version of the menu
+            menu(adventurer);
         end
         elsif (answer == 2) do
             puts "🦉 \"I'm sorry, my eyesight is bad. I need you to tell me the password before I'll let you in.\" \n"
@@ -25,7 +27,9 @@ class Storefront
                 puts "🦉 \"That's correct! Welcome!\" \n"
                 puts "The door swings open, inviting you into your shop. \n"
                 #create Shopkeeper
+                shopkeeper = Shopkeeper.new
                 #run the Shopkeeper version of the menu
+                menu(shopkeeper);
             end
             else do
                 puts "The owl suddenly flies at you! \n"
@@ -39,10 +43,21 @@ class Storefront
 
     def shelves do
         # This method will create the list of gems for sale, prices, and number in stock.
+        # Create a list of Gem objects initialized with price, quantity, and a brief description. 
+        # We should be able to access this as a user.
+        # Maybe pass to users when they're created?
 
     end
+
+    def menu(user) do
+        #check type of the user
+        #if user is Adventurer, show one menu
+        #if user is Shopkeeper, show a different menu
+    end
+
     
     # From now on, we need to check if the user is an Adventurer or Shopkeeper
     # This will affect what they can do and which menu they will be shown. 
+    # Maybe we pass the Adventurer/Shopkeeper into these functions?
 
 end
