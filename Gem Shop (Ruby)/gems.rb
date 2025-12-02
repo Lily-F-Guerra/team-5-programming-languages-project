@@ -1,11 +1,20 @@
-class Gem
-    #attributes: price, description, quantity
+class MagicGem
+  attr_accessor :name, :price, :description, :quantity
 
-    def display do
-        puts "This is a magic gem."
-    end
+  def initialize(name, price, description, quantity)
+    @name = name
+    @price = price
+    @description = description
+    @quantity = quantity
+  end
 
-    def update_stock() do
-        #pass the number we want to add/remove (positive for add, negative for remove)
-        quantity -= change
-    end
+  def display
+    puts "💎 #{name} — #{description}"
+    puts "   Price: #{price} gold | Stock: #{quantity}\n"
+  end
+
+  def update_stock(change)
+    @quantity += change
+    @quantity = 0 if @quantity < 0
+  end
+end
