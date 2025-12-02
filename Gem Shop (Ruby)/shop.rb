@@ -63,7 +63,8 @@ class Storefront
       puts "\n✨ Adventurer Menu ✨"
       puts "1. View gems for sale"
       puts "2. View your gold"
-      puts "3. Leave shop"
+      puts "3. Buy a gem"
+      puts "4. Leave shop"
 
       choice = gets.chomp
 
@@ -73,6 +74,17 @@ class Storefront
       when "2"
         puts "You have #{player.gold} gold."
       when "3"
+        puts "Enter the number of the gem you'd like to purchase."
+        shelves.each_with_index { |gem, i| puts "#{i+1}. #{gem.name}" }
+        index = gets.chomp.to_i - 1
+        gem = shelves[index]
+        if gem = shelves[index]
+          player.gold = player.gold - gem.price
+          gem.update_stock(-1)
+          puts "You have purchased one #{gem.name}. #{gem.description} May it bring you good fortune."
+        else 
+          puts "Invalid choice."
+      when "4"
         puts "Farewell, traveler!"
         exit
       else
