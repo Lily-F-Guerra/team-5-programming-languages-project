@@ -1,27 +1,20 @@
-# The Gem class will make it easier to keep track of our gems and their information.
+class MagicGem
+  attr_accessor :name, :price, :description, :quantity
 
-class Gem
-    #attributes: price, quantity, description
-    def initialize(p, q, d) do
-        price = p
-        quantity = q
-        description = d 
-    end
+  def initialize(name, price, description, quantity)
+    @name = name
+    @price = price
+    @description = description
+    @quantity = quantity
+  end
 
-    def display do
-        puts description
-    end
+  def display
+    puts "💎 #{name} — #{description}"
+    puts "   Price: #{price} gold | Stock: #{quantity}\n"
+  end
 
-    def update_stock(change) do
-        #pass the number we want to add/remove (positive for add, negative for remove)
-        quantity -= change
-    end
-
-    def update_price(newprice) do
-        #set the current price to a new price
-        price = newprice
-    end
-
-
-
-    
+  def update_stock(change)
+    @quantity += change
+    @quantity = 0 if @quantity < 0
+  end
+end

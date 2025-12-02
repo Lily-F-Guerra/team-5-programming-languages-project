@@ -1,21 +1,20 @@
-class Use
+class User
+  attr_accessor :gold
 
-    def gold
-    end
-
-    def view_shop
-    end
-
-    def gems
-    end
-
+  def initialize
+    @gold = 100
+  end
 end
 
-class Adventurer
-    # mixin from User class
-    # add view own inventory method
+class Adventurer < User
+  def initialize
+    super
+  end
 end
 
-class Shopkeeper
-    # mixin from User class
+class Shopkeeper < User
+  def initialize
+    super
+    @gold = 500 # shop starts with more gold
+  end
 end
